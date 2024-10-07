@@ -1,0 +1,207 @@
+Summary for TD_q0 
+$coef
+                                biodiv_matrix  pval
+Int                                0.20057314 1.000
+dis_AcousticDiversity_s            0.01412396 0.663
+dis_AcousticEveness_s              0.01625957 0.595
+dis_BioAcoustic_s                  0.03508030 0.001
+dis_SoundscapeSaturation_s        -0.02545119 0.025
+dis_EntropyOfVarianceSpectrum_s    0.01705081 0.068
+dis_AcousticComplexity_s           0.08365299 0.001
+dis_TemporalEntropy_s              0.03123954 0.001
+dis_EventsPerSecond_s              0.03087092 0.003
+
+$r.squared
+       R2      pval 
+0.2278908 0.0010000 
+
+$F.test
+       F   F.pval 
+131.3803   0.0010 
+
+
+
+Summary for TD_q1 
+$coef
+                                biodiv_matrix  pval
+Int                                0.29136376 1.000
+dis_AcousticDiversity_s            0.01163367 0.698
+dis_AcousticEveness_s              0.02012485 0.435
+dis_BioAcoustic_s                  0.03271393 0.002
+dis_SoundscapeSaturation_s        -0.02606250 0.014
+dis_EntropyOfVarianceSpectrum_s    0.02065389 0.014
+dis_AcousticComplexity_s           0.08200541 0.001
+dis_TemporalEntropy_s              0.03317971 0.001
+dis_EventsPerSecond_s              0.03247365 0.001
+
+$r.squared
+       R2      pval 
+0.2302151 0.0010000 
+
+$F.test
+      F  F.pval 
+133.121   0.001 
+
+
+
+Summary for TD_q2 
+$coef
+                                biodiv_matrix  pval
+Int                               0.391418789 1.000
+dis_AcousticDiversity_s           0.008462472 0.712
+dis_AcousticEveness_s             0.024942458 0.272
+dis_BioAcoustic_s                 0.029689061 0.001
+dis_SoundscapeSaturation_s       -0.026561574 0.005
+dis_EntropyOfVarianceSpectrum_s   0.023355610 0.005
+dis_AcousticComplexity_s          0.075250032 0.001
+dis_TemporalEntropy_s             0.035924729 0.001
+dis_EventsPerSecond_s             0.032169700 0.001
+
+$r.squared
+      R2     pval 
+0.215896 0.001000 
+
+$F.test
+       F   F.pval 
+122.5611   0.0010 
+
+
+
+Summary for FD_q0 
+$coef
+                                biodiv_matrix  pval
+Int                               0.011278091 1.000
+dis_AcousticDiversity_s           0.007725151 0.201
+dis_AcousticEveness_s            -0.002281549 0.681
+dis_BioAcoustic_s                 0.004663073 0.005
+dis_SoundscapeSaturation_s       -0.005030468 0.030
+dis_EntropyOfVarianceSpectrum_s   0.002624394 0.177
+dis_AcousticComplexity_s          0.016811269 0.001
+dis_TemporalEntropy_s             0.005418026 0.012
+dis_EventsPerSecond_s             0.005732979 0.002
+
+$r.squared
+       R2      pval 
+0.2604477 0.0010000 
+
+$F.test
+       F   F.pval 
+156.7594   0.0010 
+
+
+
+Summary for FD_q1 
+$coef
+                                biodiv_matrix  pval
+Int                               0.028335186 1.000
+dis_AcousticDiversity_s           0.017016202 0.420
+dis_AcousticEveness_s             0.005545963 0.793
+dis_BioAcoustic_s                -0.002643368 0.615
+dis_SoundscapeSaturation_s        0.001184632 0.896
+dis_EntropyOfVarianceSpectrum_s   0.006945597 0.339
+dis_AcousticComplexity_s          0.028999459 0.006
+dis_TemporalEntropy_s             0.019036598 0.021
+dis_EventsPerSecond_s             0.018884431 0.017
+
+$r.squared
+       R2      pval 
+0.1400507 0.0070000 
+
+$F.test
+       F   F.pval 
+72.49273  0.00700 
+
+
+
+Summary for FD_q2 
+$coef
+                                biodiv_matrix  pval
+Int                               0.077588456 1.000
+dis_AcousticDiversity_s           0.023928913 0.443
+dis_AcousticEveness_s             0.006987354 0.808
+dis_BioAcoustic_s                -0.006477000 0.440
+dis_SoundscapeSaturation_s        0.002807730 0.827
+dis_EntropyOfVarianceSpectrum_s   0.013329112 0.244
+dis_AcousticComplexity_s          0.037565759 0.013
+dis_TemporalEntropy_s             0.029502846 0.018
+dis_EventsPerSecond_s             0.026768227 0.025
+
+$r.squared
+       R2      pval 
+0.1140297 0.0010000 
+
+$F.test
+       F   F.pval 
+57.29024  0.00100 
+
+
+
+Summary for PD_q0 
+$coef
+                                biodiv_matrix  pval
+Int                               0.125249202 1.000
+dis_AcousticDiversity_s           0.011221781 0.654
+dis_AcousticEveness_s             0.012429735 0.578
+dis_BioAcoustic_s                 0.023074411 0.001
+dis_SoundscapeSaturation_s       -0.014532615 0.090
+dis_EntropyOfVarianceSpectrum_s   0.007058145 0.326
+dis_AcousticComplexity_s          0.056045738 0.001
+dis_TemporalEntropy_s             0.022954915 0.005
+dis_EventsPerSecond_s             0.018526697 0.012
+
+$r.squared
+       R2      pval 
+0.2360389 0.0010000 
+
+$F.test
+      F  F.pval 
+137.529   0.001 
+
+
+
+Summary for PD_q1 
+$coef
+                                biodiv_matrix  pval
+Int                               0.084439489 1.000
+dis_AcousticDiversity_s           0.010878328 0.601
+dis_AcousticEveness_s             0.012492908 0.517
+dis_BioAcoustic_s                 0.003815728 0.497
+dis_SoundscapeSaturation_s       -0.001244988 0.893
+dis_EntropyOfVarianceSpectrum_s   0.007966086 0.281
+dis_AcousticComplexity_s          0.033975772 0.003
+dis_TemporalEntropy_s             0.021377325 0.021
+dis_EventsPerSecond_s             0.021511229 0.005
+
+$r.squared
+       R2      pval 
+0.1583272 0.0010000 
+
+$F.test
+       F   F.pval 
+83.73251  0.00100 
+
+
+
+Summary for PD_q2 
+$coef
+                                biodiv_matrix  pval
+Int                               0.067217054 1.000
+dis_AcousticDiversity_s           0.023689547 0.449
+dis_AcousticEveness_s             0.004765073 0.880
+dis_BioAcoustic_s                -0.012233082 0.165
+dis_SoundscapeSaturation_s        0.006079068 0.648
+dis_EntropyOfVarianceSpectrum_s   0.013124846 0.275
+dis_AcousticComplexity_s          0.028398904 0.039
+dis_TemporalEntropy_s             0.027125000 0.031
+dis_EventsPerSecond_s             0.029335292 0.020
+
+$r.squared
+        R2       pval 
+0.09197337 0.01300000 
+
+$F.test
+      F  F.pval 
+45.0864  0.0130 
+
+
+
