@@ -10,141 +10,150 @@ library(dplyr)
 
 # DivPair Demo by Joerg and Anne
 # updated by Oliver, 15.04.2024
-source("scripts/div_pair_coverage_OM.R")
+source("scripts/DivPairCoverage_V2.R")
 
 ## ================================================================================================ ##
-## Use abundance data / community composition "BirdCommunityNamePhylogeny_Indices.csv" from Joerg.
-## There are 85 assemblages (rows) and 334 birds (columns), identified by experts.
-## The code below is to compute observed and coverage-based similarity and dissimilarity between any two assemblages.
-
+## Use incidence data / community composition
+## The code below is to compute observed and coverage-based/estimated dissimilarity between any two assemblages.
 
 
 # Load taxonomic diversity data
-com_td <- read.csv("taxonomic_diversity/com_td.csv", row.names = 1)
+com_td <- read.csv("taxonomic_diversity/com_td.csv", row.names = NULL)
 
 # Load phylogenetic diversity data
-com_pd <- read.csv("phylogenetic_diversity/com_pd.csv", row.names = 1)
+com_pd <- read.csv("phylogenetic_diversity/com_pd.csv", row.names = NULL)
 load(file = "phylogenetic_diversity/bird_tree.rda")
 
 # Load functional diversity data
-com_fd <- read.csv("functional_diversity/com_fd.csv", row.names = 1)
+com_fd <- read.csv("functional_diversity/com_fd.csv", row.names = NULL)
 load(file = "functional_diversity/trait_matrix.rda")
 
+
+########################## Compute Sampling Coverage (SC) ############################
+
+### Use function "DataInfobeta3D" in the package "iNEXT.beta3D"
+## Change the data format of com_td to fit to iNEXT.3D 
+# Transform into list with 1 data frame (rows = Files, columns = Birds) per Plot 
+birds_inci = lapply(unique(com_td$plot), function(i) com_td %>% filter(plot == i) %>% .[,-(1:2)] %>% t)
+names(birds_inci) = unique(com_td$plot)   ## incidence raw data for iNEXT.3D format
+
+info <- DataInfobeta3D(birds_inci, diversity = "TD", datatype = "incidence_raw",
+               PDtree = NULL, PDreftime = NULL, FDdistM = NULL, FDtype = "AUC", FDtau = NULL) 
+
+## Take the median of the extrapolated Sampling Coverages (2T) as Sampling Coverage (SC)
+SC <- median(info$`SC(2T)`) # 0.913082021...
+#SC <- 0.913082021
+
+# Histogram of the extrapolated Sampling Coverages (2T)
+# Open a PNG graphics device
+png("plots/histogram_sc.png")
+
+hist(info[1:85, "SC(2T)"], 
+     main = "Extrapolated Sampling Coverages (SC(2T)) of the 85 plots", 
+     xlab = "SC(2T)", 
+     col = "lightblue", 
+     border = "black")
+
+# Line for the chosen Sampling Coverage (SC)
+abline(v = SC, col = "blue", lwd = 2, lty = 2)
+
+# Label the SC line
+text(x = SC, y = par("usr")[4] * 0.8, labels = "median = SC", col = "blue", pos = 4)
+
+dev.off()
+
+
 ########################## Observed (with default SC) ################################
+# !!!!!!!!!!!!!! NOT USED !!!!!!!!!!!!!!!!!
 
 ## Use function iNEXTbeta3D_pair to compute similarity index (with default (min) sample coverage (SC))
-tt_TD  = iNEXTbeta3D_pair2(com_td, div0="TD", SC = NULL, parallel = T, cpus = 4)
-save(tt_TD, file= "taxonomic_diversity/tt_tax.rda")
+pairwise_TD  = iNEXTbeta3D_pair3D(com_td, div0="TD", SC = NULL, datatype0="incidence_raw", parallel = T, cpus = 4)
+save(pairwise_TD, file= "taxonomic_diversity/tt_tax.rda")
 
-tt_PD  = iNEXTbeta3D_pair2(com_pd, div0="PD", SC = NULL, PDTree0 = tr)
-save(tt_PD, file= "phylogenetic_diversity/tt_phy.rda")
+pairwise_PD  = iNEXTbeta3D_pair3D(com_pd, div0="PD", SC = NULL, datatype="incidence_raw", PDTree0 = tr, 
+                            parallel = T, cpus = 4)
+save(pairwise_PD, file= "phylogenetic_diversity/tt_phy.rda")
 
-tt_FD  = iNEXTbeta3D_pair2(com_fd, div0="FD", SC = NULL, FDdistM0 = distM)
-save(tt_FD, file= "functional_diversity/tt_func.rda")
+pairwise_FD  = iNEXTbeta3D_pair3D(com_fd, div0="FD", SC = NULL, datatype="incidence_raw", FDdistM0 = distM)
+save(pairwise_FD, file= "functional_diversity/tt_func.rda")
 
 
-save(tt_TD, tt_PD, tt_FD , file= "data/tt_org.rda")
+save(pairwise_TD, pairwise_PD, pairwise_FD , file= "data/tt_org.rda")
 #load("data/tt_org.rda")
 
-########################## Coverage-based (with user-specific SC) ################################
 # !!!!!!!!!!!!!! NOT USED !!!!!!!!!!!!!!!!!
 
 
-# Use function "DataInfobeta3D" in the package "iNEXT.beta3D"
 
-# Convert columns to rows (birds) and rows to columns (plots)
-com_td_transposed <- t(com_td)
+########################## Coverage-based (with computed SC) ################################
 
-# Compute sample size, observed species richness and sample coverage estimates (SC(n), SC(2n))
-inextinfo <- DataInfobeta3D(com_td_transposed, diversity = "TD", datatype = "abundance") 
-
-hist(inextinfo[1:86,"SC(n)"])
-abline(v=0.75, col="red")
-
-hist(inextinfo[1:86,"SC(2n)"])
-abline(v=0.75, col="red")
-
-## Use function iNEXTbeta3D_pair AND sample coverage to compute similarity index.
-
-tt_TD93  = iNEXTbeta3D_pair2(birds, div0="TD", SC = 0.93)
-save(tt_TD93, file= "data/tt_tax93.rda")
-
-tt_PD93  = iNEXTbeta3D_pair2(birds, div0="PD", SC = 0.93, PDTree0 = tr)
-save(tt_PD93, file= "data/tt_phy93.rda")
-
-tt_FD93  = iNEXTbeta3D_pair2(birds_avo, div0="FD", SC = 0.93, FDdistM0 = distM)
-save(tt_FD93, file= "data/tt_func93.rda")
+## Use function iNEXTbeta3D_pair3D AND sample coverage to compute similarity index.
+ 
+pairwise_TD91 = iNEXTbeta3D_pair3D(com_td, div0="TD", SC = SC, datatype0 = "incidence_raw", parallel = T, cpus = 8)
+save(pairwise_TD91, file= "taxonomic_diversity/pairwise_TD91.rda")
 
 
-save(tt_TD93, tt_PD93, tt_FD93 , file= "data/tt_org93.rda")
-#load("data/tt_org93.rda")
+pairwise_PD91 = iNEXTbeta3D_pair3D(com_pd, div0="PD", SC = SC, datatype0 = "incidence_raw", PDTree0 = tr, 
+                                   parallel = T, cpus = 8)
+save(pairwise_PD91, file= "phylogenetic_diversity/pairwise_PD91.rda")
 
 
-colnames(tt_TD) # jac, sor - > q = 0, hor -> q = 1, mor_hor -> q = 2
+pairwise_FD91 = iNEXTbeta3D_pair3D(com_fd, div0="FD", SC = SC, datatype0 = "incidence_raw", FDdistM0 = distM, 
+                                  parallel = T, cpus = 8)
+save(pairwise_FD91, file= "functional_diversity/pairwise_FD91.rda")
 
-# !!!!!!!!!!!!!! NOT USED !!!!!!!!!!!!!!!!!
+
+save(pairwise_TD91, pairwise_PD91, pairwise_FD91 , file= "data/pairwise_TD_PD_FD.rda")
+#load("data/pairwise_TD_PD_FD.rda")
+
 
 
 
 ## Compute dissimilarity matrices for the different diversities (taxonomic, pyhlogenetic and functional) and Hill numbers (q0, q1, q2)
 
 #  Dissimilarity matrices TD 
-# q0
-sim_com_exp_q0est <- matrix(tt_TD[,"sor_est"], ncol = nrow(com_td), byrow = T)
-dis_com_exp_q0est <- (1 - sim_com_exp_q0est) # convert to dissimilarity ('0' = completely similar, '1' = completely dissimilar)
-row.names(dis_com_exp_q0est)<-row.names(com_td)
+## observed
+dis_com_q0obs_td <- 1- pairwise_TD91[["Matrices"]][["jac_obs"]]
+dis_com_q1obs_td <- 1- pairwise_TD91[["Matrices"]][["hor_obs"]]
+dis_com_q2obs_td <- 1- pairwise_TD91[["Matrices"]][["mor_hor_obs"]]
 
-# q1
-sim_com_exp_q1est <- matrix(tt_TD[,"hor_est"], ncol = nrow(com_td), byrow = T)
-dis_com_exp_q1est <- (1 - sim_com_exp_q1est)
-row.names(dis_com_exp_q1est)<-row.names(com_td)
-
-# q2
-sim_com_exp_q2est <- matrix(tt_TD[,"mor_hor_est"], ncol = nrow(com_td), byrow = T)
-dis_com_exp_q2est <- (1 - sim_com_exp_q2est)
-row.names(dis_com_exp_q2est)<-row.names(com_td)
+## estimated
+dis_com_q0est <- 1- pairwise_TD91[["Matrices"]][["jac_est"]]
+dis_com_q1est <- 1- pairwise_TD91[["Matrices"]][["hor_est"]]
+dis_com_q2est <- 1- pairwise_TD91[["Matrices"]][["mor_hor_est"]]
 
 
 
 #  Dissimilarity matrices PD
-# q0
-sim_com_exp_q0est_pd <- matrix(tt_PD[,"sor_est"], ncol = nrow(com_pd), byrow = T)
-dis_com_exp_q0est_pd <- (1 - sim_com_exp_q0est_pd)
-row.names(dis_com_exp_q0est_pd)<-row.names(com_pd)
+## observed
+dis_com_q0obs_pd <- 1- pairwise_PD91[["Matrices"]][["jac_obs"]]
+dis_com_q1obs_pd <- 1- pairwise_PD91[["Matrices"]][["hor_obs"]]
+dis_com_q2obs_pd <- 1- pairwise_PD91[["Matrices"]][["mor_hor_obs"]]
 
-# q1
-sim_com_exp_q1est_pd <- matrix(tt_PD[,"hor_est"], ncol = nrow(com_pd), byrow = T)
-dis_com_exp_q1est_pd <- (1 - sim_com_exp_q1est_pd)
-row.names(dis_com_exp_q1est_pd)<-row.names(com_pd)
-
-# q2
-sim_com_exp_q2est_pd <- matrix(tt_PD[,"mor_hor_est"], ncol = nrow(com_pd), byrow = T)
-dis_com_exp_q2est_pd <- (1 - sim_com_exp_q2est_pd)
-row.names(dis_com_exp_q2est_pd)<-row.names(com_pd)
+## estimated
+dis_com_q0est_pd <- 1- pairwise_PD91[["Matrices"]][["jac_est"]]
+dis_com_q1est_pd <- 1- pairwise_PD91[["Matrices"]][["hor_est"]]
+dis_com_q2est_pd <- 1- pairwise_PD91[["Matrices"]][["mor_hor_est"]]
 
 
 
 #  Dissimilarity matrices FD
-# q0
-sim_com_exp_q0est_fd <- matrix(tt_FD[,"sor_est"], ncol = nrow(com_fd), byrow = T)
-dis_com_exp_q0est_fd <- (1 - sim_com_exp_q0est_fd)
-row.names(dis_com_exp_q0est_fd)<-row.names(com_fd)
+##observed
+dis_com_q0obs_fd <- 1- pairwise_FD91[["Matrices"]][["jac_obs"]]
+dis_com_q1obs_fd <- 1- pairwise_FD91[["Matrices"]][["hor_obs"]]
+dis_com_q2obs_fd <- 1- pairwise_FD91[["Matrices"]][["mor_hor_obs"]]
 
-# q1
-sim_com_exp_q1est_fd <- matrix(tt_FD[,"hor_est"], ncol = nrow(com_fd), byrow = T)
-dis_com_exp_q1est_fd <- (1 - sim_com_exp_q1est_fd)
-row.names(dis_com_exp_q1est_fd)<-row.names(com_fd)
-
-# q2
-sim_com_exp_q2est_fd <- matrix(tt_FD[,"mor_hor_est"], ncol = nrow(com_fd), byrow = T)
-dis_com_exp_q2est_fd <- (1 - sim_com_exp_q2est_fd)
-row.names(dis_com_exp_q2est_fd)<-row.names(com_fd)
+## estimated
+dis_com_q0est_fd <- 1- pairwise_FD91[["Matrices"]][["jac_est"]]
+dis_com_q1est_fd <- 1- pairwise_FD91[["Matrices"]][["hor_est"]]
+dis_com_q2est_fd <- 1- pairwise_FD91[["Matrices"]][["mor_hor_est"]]
 
 
 
-save(dis_com_exp_q0est, dis_com_exp_q1est, dis_com_exp_q2est , file= "taxonomic_diversity/distances_com_exp_tax.rda")
-save(dis_com_exp_q0est_pd, dis_com_exp_q1est_pd, dis_com_exp_q2est_pd , file= "phylogenetic_diversity/distances_com_exp_phy.rda")
-save(dis_com_exp_q0est_fd, dis_com_exp_q1est_fd, dis_com_exp_q2est_fd , file= "functional_diversity/distances_com_exp_func.rda")
+
+save(dis_com_q0est, dis_com_q1est, dis_com_q2est , file= "taxonomic_diversity/distances_com_exp_tax.rda")
+save(dis_com_q0est_pd, dis_com_q1est_pd, dis_com_q2est_pd , file= "phylogenetic_diversity/distances_com_exp_phy.rda")
+save(dis_com_q0est_fd, dis_com_q1est_fd, dis_com_q2est_fd , file= "functional_diversity/distances_com_exp_func.rda")
 
 
 

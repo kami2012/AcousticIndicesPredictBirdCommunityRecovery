@@ -1,6 +1,4 @@
-
-rm(list=ls(all=TRUE))
-Sys.setenv(LANG = "en")
+rm(list=ls())
 
 library(ape)
 library(picante)
@@ -8,21 +6,29 @@ library(vegan)
 library(dplyr)
 
 
-#### loading expert community composition data; take plots as rownames 
-data_com <- read.csv2("data/BirdCommunityNamePhylogeny_Indices.csv", row.names=1,header=T)
+## ================================================================================================ ##
+## Prepare bird incidence data 
 
-rownames(data_com)
-names(data_com)
+### loading bird incidence data with the following format: 
+ 
+##  filename | plot | bird1 | bird2 |...
+##                  |  0    |  1    |... 
+
+data_complete <- read.table("data/detections_freile_gelis_2021_2022_birds_dummy_pivot_reordered.csv", header=T, check.names = F,sep=";")
+
+# Remove plots with all zero values (ACN1) and plots without context information (CR16)
+data_filtered <- data_complete[!data_complete$plot %in% c("ACN1", "CR16"), ] # => 85 plots
+
+
 
 ####################################################################
 #####################Taxonomic Diversity############################
 ####################################################################
 
-com_td<-data_com[,14:347]
-# 85 334
-dim(com_td)
+com_td <- data_filtered
 
-write.csv(com_td, file = "taxonomic_diversity/com_td.csv")
+write.csv(com_td, file = "taxonomic_diversity/com_td.csv", row.names = FALSE, fileEncoding = "UTF-8")
+
 
 ####################################################################
 #####################Phylogenetic Diversity#########################
@@ -37,13 +43,13 @@ tr <- read.tree(file = "data/TreeBirds334Canande.tre")
 names(com_pd)[!names(com_pd)%in%tr$tip.label]
 # find and drop tips (species) in the tree that are not in the com_pd 
 tr <- drop.tip(tr, setdiff(tr$tip.label, names(com_pd)))
-# reorder the columns of com_pd to match the order of the tree tip labels
-com_pd <- com_pd[,match(tr$tip.label, names(com_pd))]
-# check if all column names of com_pd now exactly match the tip labels of the phylogenetic tree tr
-all(names(com_pd) == tr$tip.label)
+# reorder the columns of com_pd to match the order of the tree tip labels, but keep the first two 
+com_pd <- com_pd[, c(1:2, match(tr$tip.label, names(com_pd)[-c(1:2)]) + 2)]
+# check if all column names of com_pd (except plot and filename) now exactly match the tip labels of the phylogenetic tree tr
+all(names(com_pd)[-c(1, 2)] == tr$tip.label)
 
 
-write.csv(com_pd, file = "phylogenetic_diversity/com_pd.csv")
+write.csv(com_pd, file = "phylogenetic_diversity/com_pd.csv", row.names = FALSE, fileEncoding = "UTF-8")
 save(tr, file = "phylogenetic_diversity/bird_tree.rda")
 
 ####################################################################
@@ -54,18 +60,18 @@ com_fd <- com_td
 
 ##### load bird traits dataframe
 
-data_traits <- read.csv("data/CommunityAllplots334BirdSpecies_TraitsAvonet.csv", sep=";")
+traits <- read.csv("data/CommunityAllplots334BirdSpecies_TraitsAvonet.csv", sep=";")
 
-# check which column names in com_fd are not present in the Name.Phylogeny.Latin column of data_traits
-names(com_fd)[!names(com_fd) %in% data_traits$Name.Phylogeny.Latin]
-# reorder the columns of com_fd to match the order of data_traits
-com_fd <- com_fd[,match(data_traits$Name.Phylogeny.Latin, names(com_fd))]
+# check which column names in com_fd are not present in the Name.Phylogeny.Latin column of traits
+names(com_fd)[!names(com_fd) %in% traits$Name.Phylogeny.Latin]
+# reorder the columns of com_fd to match the order of traits
+com_fd <- com_fd[, c(1:2, match(traits$Name.Phylogeny.Latin, names(com_fd)[-c(1:2)]) + 2)]
 
 ##### clean up traits 
-row.names(data_traits) <- data_traits$Name.Phylogeny.Latin
+row.names(traits) <- traits$Name.Phylogeny.Latin
 
-# Create a copy of the dataframe to work on
-traits_cleaned <- data_traits
+# Create a copy of traits to work on
+traits_cleaned <- traits
 
 # List of columns that should be numeric
 numeric_cols <- c("BeakLength_Culmen", "BeakLength_Nares", "BeakWidth", "BeakDepth", 
@@ -123,5 +129,5 @@ distM <- cluster::daisy(x = traits, metric = "gower") %>% as.matrix()
 
 
 
-write.csv(com_fd, file = "functional_diversity/com_fd.csv")
+write.csv(com_fd, file = "functional_diversity/com_fd.csv", row.names = FALSE, fileEncoding = "UTF-8")
 save(distM, file = "functional_diversity/trait_matrix.rda")
