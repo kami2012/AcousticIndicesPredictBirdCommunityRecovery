@@ -109,13 +109,13 @@ for (axis in nmds_axis1) {
 save(models, r_squared_results, t_values_results, 
      predictions_tdata_results, predictions_ndata_results,
      test_data, train_data, new_data, 
-     file = "data/04_soundIndices_as_predictors/data_models_and_results.RData")
+     file = "data/data_models_and_results.RData")
 
 
 ######################################################################################################
 ###################### Plot the acoustic indices as predictors for nmds Axis 1 #######################
 
-load("data/04_soundIndices_as_predictors/data_models_and_results.RData")
+load("data/data_models_and_results.RData")
 
 # Create the plot layout
 png(filename = "plots/soundIndicesAsPred.png", width = 170, height = 200, units = "mm", res = 1000)
@@ -199,7 +199,7 @@ dev.off()
 ######################################################################################################
 ##################### Print the t-values of the acoustic indices as table ############################
 
-load("data/04_soundIndices_as_predictors/data_models_and_results.RData")
+load("data/data_models_and_results.RData")
 
 
 # Create a dataframe to store t-values for each axis
