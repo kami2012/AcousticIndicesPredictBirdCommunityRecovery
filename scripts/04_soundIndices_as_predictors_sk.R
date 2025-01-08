@@ -40,24 +40,16 @@ test_data <- data_com[seq(3, nrow(data_com), by = 3), ]
 # Remaining rows (those not in the test set) for the training set
 train_data <- data_com[-seq(3, nrow(data_com), by = 3), ]
 
-# Generate a grid of hypothetical values 
-# for the prediction interval
-new_data <- expand.grid(
-  SoundscapeSaturation = seq(min(data_com$SoundscapeSaturation), max(data_com$SoundscapeSaturation), length.out = 10),
-  EntropyOfVarianceSpectrum = seq(min(data_com$EntropyOfVarianceSpectrum), max(data_com$EntropyOfVarianceSpectrum), length.out = 10),
-  AcousticComplexity = seq(min(data_com$AcousticComplexity), max(data_com$AcousticComplexity), length.out = 10),
-  TemporalEntropy = seq(min(data_com$TemporalEntropy), max(data_com$TemporalEntropy), length.out = 10),
-  EventsPerSecond = seq(min(data_com$EventsPerSecond), max(data_com$EventsPerSecond), length.out = 10)
-)
-
 
 # Initialize lists to store R-squared values, t-values, predictions and models
 # for each response variable
 models <- list()
+models_pi <- list()
 r_squared_results <- list()
 t_values_results <- list()
 predictions_tdata_results <- list()
 predictions_ndata_results <- list()
+pseqs <- list()
 
 
 
@@ -89,12 +81,32 @@ for (axis in nmds_axis1) {
   # Store predicted values
   predictions_tdata_results[[axis]] <- predictions_tdata
   
+  # predicted values
+  x = predictions_tdata_results[[axis]]
+  # observed values
+  y = test_data[[axis]]
+  
+  newdf <- data.frame(y = y,x = x)
+  
+  # Fit linear model for the prediction interval
+  model_pi <- lm(y ~ x, data = newdf)
+  
+  # Store the prediction interval model 
+  models_pi[[axis]] <- model_pi
+  
+  
+  # Create hypothetical data
+  lout <- 100
+  pseq <- seq(1.1*min(x), 1.1*max(x), length=lout)
+  pseqs[[axis]] <- pseq
+  ndata <- data.frame(x = pseq)
   
   # Predict on the hypothetical data
-  predictions_ndata <- predict(model, newdata = new_data, interval = "prediction")
+  predictions_ndata <- predict(model_pi, newdata = ndata, interval = "prediction")
   
   # Store predicted values
   predictions_ndata_results[[axis]] <- predictions_ndata
+  
   
   
   # Calculate R-squared for the predictions
@@ -106,9 +118,9 @@ for (axis in nmds_axis1) {
 
 
 # Save models, results, and datasets to a single file
-save(models, r_squared_results, t_values_results, 
+save(models, models_pi, r_squared_results, t_values_results, 
      predictions_tdata_results, predictions_ndata_results,
-     test_data, train_data, new_data, 
+     test_data, train_data,
      file = "data/data_models_and_results.RData")
 
 
@@ -137,8 +149,6 @@ for (axis in nmds_axis1) {
   
   # Scatterplot: Predicted vs Observed
   plot(predicted_tdata_values, observed_values, 
-       #xlab = "Predicted Bird Community", 
-       #ylab = "Observed Bird Community",
        pch = 1,
        col = rgb(0, 0, 0, 0.5))  # Black points with 50% transparency
   
@@ -152,11 +162,11 @@ for (axis in nmds_axis1) {
   lower_bound <- lower_bound[ordering]
   upper_bound <- upper_bound[ordering]
   
-  
   # Plot prediction interval
-  polygon(c(predicted_ndata_values, rev(predicted_ndata_values)),
+  polygon(c(pseqs[[axis]], rev(pseqs[[axis]])),
           c(upper_bound, rev(lower_bound)), 
           col = rgb(0, 0, 1, 0.2), border = NA)
+  
   
   # Fit regression line
   abline(lm(observed_values ~ predicted_tdata_values), col = "blue", lwd = 2)
@@ -168,7 +178,6 @@ for (axis in nmds_axis1) {
   text(text_x, text_y, 
        paste("R² =", round(r_squared, 2)), 
        pos=4, col="blue")
-  
 }
 
 # Add labels for rows and columns
@@ -177,19 +186,10 @@ mtext("q = 1", side=3, line=0.5, outer=TRUE, at=0.5, cex=1.2)
 mtext("q = 2", side=3, line=0.5, outer=TRUE, at=0.833, cex=1.2)
 
 # Left side labels (y-axis)
-mtext("Observed Bird Community", side=2, line=2, outer=TRUE, at=0.83, cex=0.9)
-mtext("Observed Bird Community", side=2, line=2, outer=TRUE, at=0.5, cex=0.9)
-mtext("Observed Bird Community", side=2, line=2, outer=TRUE, at=0.17, cex=0.9)
-
-# Right side labels (y-axis)
-#mtext("Taxonomic", side = 4, line = 3, outer = TRUE, at = 0.83, cex = 1.2)
-#mtext("Functional", side = 4, line = 3, outer = TRUE, at = 0.5, cex = 1.2)
-#mtext("Phylogenetic", side = 4, line = 3, outer = TRUE, at = 0.17, cex = 1.2)
+mtext("Observed Bird Community", side=2, line=2, outer=TRUE, at=0.5, cex=1.2)
 
 # Bottom labels (x-axis)
-mtext("Predicted Bird Community", side = 1, line = 3, outer = TRUE, at = 0.17, cex = 0.9)
-mtext("Predicted Bird Community", side = 1, line = 3, outer = TRUE, at = 0.5, cex = 0.9)
-mtext("Predicted Bird Community", side = 1, line = 3, outer = TRUE, at = 0.83, cex = 0.9)
+mtext("Predicted Bird Community", side = 1, line = 3, outer = TRUE, at = 0.5, cex = 1.2)
 
 
 dev.off()
@@ -273,6 +273,8 @@ gtsave(results_gt, "plots/t-values.png")
 
 ######################################################################################################
 ################################## Make a heatmap of the t-values ####################################
+
+load("data/data_models_and_results.RData")
 
 # Convert the 'results' data frame into a matrix for heatmap plotting
 results_matrix <- as.matrix(results[, -1])  # Remove the 'Acoustic Indices' column
