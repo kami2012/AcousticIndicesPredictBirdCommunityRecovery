@@ -89,6 +89,8 @@ write.csv(stress_levels, file = "data/nmds_stress_levels.csv", row.names = FALSE
 
 ################################ Plot all in one #########################################
 
+# Supplementary Figure S2
+
 # Load NMDS results
 nmds_results <- readRDS("data/nmds_results.rds")
 
@@ -155,6 +157,8 @@ mtext("Phylogenetic Diversity", side = 2, line = 2, outer = TRUE, at = 0.17, cex
 dev.off()
 
 ################################ Plot only  PD q = 0 #########################################
+
+# Figure 2
 
 # Select the right nmds object
 nmds <- nmds_results[["PD_q0"]]

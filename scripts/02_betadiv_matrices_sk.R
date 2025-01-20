@@ -46,6 +46,9 @@ SC <- median(info$`SC(2T)`) # 0.913082021...
 
 # Histogram of the extrapolated Sampling Coverages (2T)
 # Open a PNG graphics device
+
+# Supplementary Figure S1 
+
 png("plots/histogram_sc.png")
 
 hist(info[1:85, "SC(2T)"], 

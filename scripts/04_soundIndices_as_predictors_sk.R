@@ -127,6 +127,8 @@ save(models, models_pi, r_squared_results, t_values_results,
 ######################################################################################################
 ###################### Plot the acoustic indices as predictors for nmds Axis 1 #######################
 
+# Figure 3
+
 load("data/data_models_and_results.RData")
 
 # Create the plot layout
@@ -186,10 +188,10 @@ mtext("q = 1", side=3, line=0.5, outer=TRUE, at=0.5, cex=1.2)
 mtext("q = 2", side=3, line=0.5, outer=TRUE, at=0.833, cex=1.2)
 
 # Left side labels (y-axis)
-mtext("Observed Bird Community", side=2, line=2, outer=TRUE, at=0.5, cex=1.2)
+mtext("Observed Bird Community (NMDS1)", side=2, line=2, outer=TRUE, at=0.5, cex=1.2)
 
 # Bottom labels (x-axis)
-mtext("Predicted Bird Community", side = 1, line = 3, outer = TRUE, at = 0.5, cex = 1.2)
+mtext("Predicted Bird Community (NMDS1)", side = 1, line = 3, outer = TRUE, at = 0.5, cex = 1.2)
 
 
 dev.off()
@@ -198,6 +200,8 @@ dev.off()
 
 ######################################################################################################
 ##################### Print the t-values of the acoustic indices as table ############################
+
+# Table 1
 
 load("data/data_models_and_results.RData")
 
@@ -274,6 +278,8 @@ gtsave(results_gt, "plots/t-values.png")
 ######################################################################################################
 ################################## Make a heatmap of the t-values ####################################
 
+# Supplementary Figure S3
+
 load("data/data_models_and_results.RData")
 
 # Convert the 'results' data frame into a matrix for heatmap plotting
@@ -289,12 +295,14 @@ png("plots/heatmap_t_values.png", width = 800, height = 600)
 # Custom heatmap with annotations
 heatmap(
   results_matrix, 
-  col = colorRampPalette(c("blue", "white", "red"))(80),  # Custom color palette
+  col = colorRampPalette(c("blue", "white", "red"))(100),  # Custom color palette
   scale = "none",  # Keep raw values (no scaling)
-  margins = c(8, 12),  # Adjust margins for better readability
+  margins = c(10, 14),  # Adjust margins for better readability
   labRow = rownames(results_matrix),  # Acoustic Indices as row labels
   labCol = colnames(results_matrix),  # Diversity types and Hill numbers as column labels
   #main = "t-values by Diversity Type and Hill Number",
+  cexCol = 1.5,  # Increase the size of column labels (x-axis labels)
+  cexRow = 1.5,  # Increase the size of row labels (y-axis labels)
   Colv = NA, Rowv = NA
 )
 
