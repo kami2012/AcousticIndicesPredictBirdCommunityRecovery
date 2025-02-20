@@ -20,7 +20,7 @@ plc <- read.table("data/BirdCommunityNamePhylogeny_Indices.csv", header=T, sep =
 plc <- plc[, 1:6]
 
 # Creating a new data frame with color and point shapes for every plot category
-clr_data <- data.frame(clr=c("orange","orange","sienna","yellow","yellow","greenyellow","greenyellow","chartreuse3","chartreuse3","darkgreen"),
+clr_data <- data.frame(clr=c("orange","orange","sienna","#ffd500","#ffd500","#92cb11","#92cb11","#359619","#359619","darkgreen"),
                        Category10 = c("A_Caca","A_Past","A_Old","F_Caca","F_Past","F_CReg1","F_PReg1","F_CReg2","F_PReg2","F_Old"),
                        shp = c(17,15,16,17,15,17,15,17,15,16))
 
@@ -80,7 +80,7 @@ legend("bottomright",
                NA, 19, 19, 19, 19, 19, 
                17, 15),
        col = c("black", "orange", "sienna", "white", 
-               "black", "yellow", "greenyellow", "chartreuse3", "darkgreen", "white",
+               "black", "#ffd500", "#92cb11", "#359619", "darkgreen", "white",
                "black", "black"),
        legend = c(expression(bold("Agricultural Matrix")), "Agriculture", "Old-growth", "",
                   expression(bold("Forest Matrix")), "Agriculture" , "Regeneration I", "Regeneration II", "Old-growth", "",
