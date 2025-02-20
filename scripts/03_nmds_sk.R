@@ -94,21 +94,40 @@ write.csv(stress_levels, file = "data/nmds_stress_levels.csv", row.names = FALSE
 # Load NMDS results
 nmds_results <- readRDS("data/nmds_results.rds")
 
+# Load data_com
+data_com <- read.csv("data/plots_categories_indices_nmds.csv")
+
+# Create a mapping for labels
+label_mapping <- c(
+  "A_Caca" = "A_C",
+  "A_Past" = "A_P",
+  "A_Old" = "A_Old",
+  "F_Caca" = "F_C",
+  "F_Past" = "F_P",
+  "F_CReg1" = "F_C_RegI",
+  "F_PReg1" = "F_P_RegI",
+  "F_CReg2" = "F_C_RegII",
+  "F_PReg2" = "F_P_RegII",
+  "F_Old" = "F_Old"
+)
+# Assign new column for labels
+data_com$Label <- label_mapping[data_com$Category10]
+
 # Manual color mapping
 color_mapping <- c(
-  "A_Caca" = "orange",
-  "A_Past" = "orange",
+  "A_C" = "orange",
+  "A_P" = "orange",
   "A_Old" = "sienna",
-  "F_Caca" = "yellow",
-  "F_Past" = "yellow",
-  "F_CReg1" = "greenyellow",
-  "F_PReg1" = "greenyellow",
-  "F_CReg2" = "chartreuse3",
-  "F_PReg2" = "chartreuse3",
+  "F_C" = "yellow",
+  "F_P" = "yellow",
+  "F_C_RegI" = "greenyellow",
+  "F_P_RegI" = "greenyellow",
+  "F_C_RegII" = "chartreuse3",
+  "F_P_RegII" = "chartreuse3",
   "F_Old" = "darkgreen"
 )
 
-data_com$Color <- color_mapping[data_com$Category10]
+data_com$Color <- color_mapping[data_com$Label]
 
 # Helper function to plot NMDS, add hulls and spiders
 plot_nmds <- function(nmds, name) {
@@ -118,21 +137,21 @@ plot_nmds <- function(nmds, name) {
   points(nmds, display = "sites", col = data_com$Color, pch = 19, cex = 0.8)
   
   # Add hulls for each group with correct color mapping
-  unique_groups <- unique(data_com$Category10)
+  unique_groups <- unique(data_com$Label)
   for (group in unique_groups) {
-    ordihull(nmds, groups = data_com$Category10, display = "sites", 
+    ordihull(nmds, groups = data_com$Label, display = "sites", 
              show.groups = group, draw = "polygon", col = color_mapping[group], alpha = 0.5)
   }
   
   # Add spiders for each group with correct color mapping
   for (group in unique_groups) {
-    ordispider(nmds, groups = data_com$Category10, display = "sites", 
+    ordispider(nmds, groups = data_com$Label, display = "sites", 
                show.groups = group, col = color_mapping[group], label = TRUE)
   }
 }
 
 # Create the plot layout
-png(filename = "plots/nmds_new.png", width = 170, height = 200, units = "mm", res = 1000)
+png(filename = "plots/nmds.png", width = 170, height = 200, units = "mm", res = 1000)
 layout(matrix(c(1, 2, 3, 
                 4, 5, 6, 
                 7, 8, 9), ncol = 3, byrow = TRUE), 
@@ -177,25 +196,28 @@ ordiplot(nmds, display = "sites", type = "n")
 points(nmds, display = "sites", col = data_com$Color, pch = 19, cex = 0.8)
 
 # Add hulls for each group with correct color mapping
-unique_groups <- unique(data_com$Category10)
+unique_groups <- unique(data_com$Label)
 for (group in unique_groups) {
-  ordihull(nmds, groups = data_com$Category10, display = "sites", 
+  ordihull(nmds, groups = data_com$Label, display = "sites", 
            show.groups = group, draw = "polygon", col = color_mapping[group], alpha = 0.5)
 }
 
 # Add spiders for each group with correct color mapping
 for (group in unique_groups) {
-  ordispider(nmds, groups = data_com$Category10, display = "sites", 
+  ordispider(nmds, groups = data_com$Label, display = "sites", 
              show.groups = group, col = color_mapping[group], label = TRUE)
 }
 
 # Add a legend with adjusted inner margins
 legend("topleft", 
-       legend = c("A = \"Agricultural Matrix\"", "F = \"Forest Matrix\""), 
-       bty = "o",          # Box around the legend
-       cex = 0.9,          # Adjust text size
+       legend = c("A = Agricultural Matrix", "F = Forest Matrix", "",
+                  "C = (former) Cacao", "P = (former) Pasture", "",
+                  "RegI = Regeneration I", "RegII = Regeneration II", "Old = Old growth"), 
+       #bty = "o",          # Box around the legend
+       cex = 0.8,          # Adjust text size
        text.col = "black", 
-       inset = 0.02)       # Move the legend slightly inside
+       #inset = 0.02
+       )       # Move the legend slightly inside
        
 
 dev.off()
