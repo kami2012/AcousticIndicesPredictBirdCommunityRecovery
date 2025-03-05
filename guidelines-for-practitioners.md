@@ -102,6 +102,14 @@ dis_com_q2est_pd <- 1- pairwise_PD91[["Matrices"]][["mor_hor_est"]]
 - [traits] must be a pairwise distance matrix (Gower distance)
 
 
+## Step 5: Perform ordination
+
+## Step 6: Divide the validation subset into train and test
+
+## Step 7: Train linear models
+
+## Step 8: Analyze all data [sound files] 
+
 
 
 
