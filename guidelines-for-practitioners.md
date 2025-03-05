@@ -40,7 +40,7 @@
 **Output:** data/detections_freile_gelis_2021_2022_birds_dummy_pivot_reordered.csv [community dataset]  
 ![image](https://github.com/user-attachments/assets/16ebc402-7c77-482d-ae2f-aaa72cec6f84)
 
-**Comments:**  
+**Comments:**  The first column must be named "filename", the second "plot".
 
 ## Step 4: Compute pairwise β-diversity indices (distance matrices) 
 
