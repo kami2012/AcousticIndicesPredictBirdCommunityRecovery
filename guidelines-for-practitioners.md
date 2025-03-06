@@ -1,6 +1,17 @@
 # Guidelines for Practitioners
 
-## Step 1: Collect sound recordings
+# Table of Contents
+
+1. [Collect Sound Recordings](#step-1-collect-sound-recordings)  
+2. [Compute Acoustic Indices](#step-2-compute-acoustic-indices)  
+3. [Make a Validation Dataset](#step-3-make-a-validation-dataset)  
+4. [Compute Pairwise β-Diversity Indices](#step-4-compute-pairwise-β-diversity-indices)  
+5. [Perform NMDS Ordination](#step-5-perform-nmds-ordination)  
+6. [Train Linear Models](#step-6-train-linear-models)  
+7. [Analyze All Data](#step-7-analyze-all-data)  
+
+
+## Step 1: Collect Sound Recordings
 
 **Description:** Record audio in all plots of interest.  
 
@@ -12,7 +23,7 @@
 
 **Comments:**  
 
-## Step 2: Compute acoustic indices
+## Step 2: Compute Acoustic Indices
 
 **Description:** Compute the following 5 acoustic indices for all [sound files]:  
 - Soundscape Saturation
@@ -43,7 +54,7 @@
 
 **Comments:**  The first column must be named "filename", the second "plot".
 
-## Step 4: Compute pairwise β-diversity indices (dissimilarity matrices) 
+## Step 4: Compute Pairwise β-Diversity Indices
 
 **Description:** Compute pairwise β-diversity indices (dissimilarity matrices), taking into account three dimensions of biodiversity
 - “taxonomic diversity” (TD)
@@ -61,16 +72,11 @@ species (based on Jaccard, Horn, and Morisita-Horn index).
 
 **Input:** 
 
-*TD*
--  taxonomic_diversity/com_td.csv [community dataset]
-
-*PD*
-- phylogenetic_diversity/com_pd.csv [community dataset]
-- phylogenetic_diversity/bird_tree.rda [tree]
-
-*FD*
-- functional_diversity/com_fd.csv [community dataset]
-- functional_diversity/trait_matrix.rda [traits]
+| Biodiversity Type         | Input Dataset                         | Additional Data                     |
+|--------------------------|--------------------------------------|-------------------------------------|
+| **Taxonomic Diversity (TD)** | `taxonomic_diversity/com_td.csv`  [community dataset]   | -                                   |
+| **Phylogenetic Diversity (PD)** | `phylogenetic_diversity/com_pd.csv` [community dataset] | `bird_tree.rda` (Newick format)     |
+| **Functional Diversity (FD)** | `functional_diversity/com_fd.csv` [community dataset]  | `trait_matrix.rda` (Gower distance) |
 
 
 **Analysis:** iNEXTbeta3D_pair3D (an adaptation of iNEXT.beta3D [*iNEXT.beta3D* package])
@@ -104,7 +110,7 @@ dis_com_q2est_pd <- 1- pairwise_PD91[["Matrices"]][["mor_hor_est"]]
 - [traits] must be a pairwise distance matrix (Gower distance)
 
 
-## Step 5: Perform ordination (NMDS)
+## Step 5: Perform NMDS Ordination
 
 **Description:** To reduce the multidimensional complexity of the dissimilarity matrices to a two-dimensional representation (axis1 and axis2), perform an ordination with each distance matrix (TD, PD and FD) and for all orders of q (q = 0, q = 1 and q = 2). 
 
@@ -147,7 +153,7 @@ for (name in names(dissimilarity_matrices)) {
 - Adjust k (number of dimensions) if needed.
 
 
-## Step 6: Train linear models
+## Step 6: Train Linear Models
 
 **Description:** Take the resulting nmds axis1 values as response variables in linear models, with the five acoustic indices (Soundscape Saturation, Entropy Of Variance Spectrum, Acoustic Complexity, Temporal Entropy and Events Per Second) as predictor variables. 
 
@@ -206,7 +212,7 @@ for (axis in nmds_axis1) {
 
 **Comments:** Evaluate the models`performance by checking R^2 or the t-values.  
 
-## Step 7: Analyze all data [sound files] 
+## Step 7: Analyze All Data
 
 **Description:** If your model(s) can predict your test_data well, you can use them for analyzing your remaining sound data. 
 
