@@ -219,7 +219,7 @@ for (axis in nmds_axis1) {
 
 **Output:** `data/data_models_and_results.RData` 
 
-**Comments:** Assess the model's performance by comparing predicted NMDS Axis 1 values with observed NMDS Axis 1 values. Use R² to evaluate model fit and t-values to determine the significance of predictor variables.  
+**Comments:** Assess the model's performance by comparing predicted NMDS axis1 values with observed NMDS axis1 values. Use R² to evaluate model fit and t-values to determine the significance of predictor variables.  
 
 ## Step 7: Analyze All Data  
 
