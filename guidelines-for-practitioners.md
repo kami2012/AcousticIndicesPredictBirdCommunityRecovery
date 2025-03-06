@@ -48,7 +48,7 @@
 
 **Analysis:** Experts label species presence (1) /absence (0) in each file.  
 
-**Output:** data/detections_freile_gelis_2021_2022_birds_dummy_pivot_reordered.csv [community dataset]  
+**Output:** `data/detections_freile_gelis_2021_2022_birds_dummy_pivot_reordered.csv` [community dataset]  
 
 ![image](https://github.com/user-attachments/assets/16ebc402-7c77-482d-ae2f-aaa72cec6f84)
 
@@ -68,7 +68,7 @@ and focusing on
 
 species (based on Jaccard, Horn, and Morisita-Horn index).  
 
-**Script:** scripts/02_betadiv_matrices_sk.R
+**Script:** `scripts/02_betadiv_matrices_sk.R`
 
 **Input:** 
 
@@ -100,9 +100,9 @@ dis_com_q2est_pd <- 1- pairwise_PD91[["Matrices"]][["mor_hor_est"]]
 ```
 
 **Output:** 
-- taxonomic_diversity/distances_com_exp_tax.rda [dissimilarity matrices]
-- phylogenetic_diversity/distances_com_exp_phy.rda [dissimilarity matrices]
-- functional_diversity/distances_com_exp_func.rda [dissimilarity matrices]
+- `taxonomic_diversity/distances_com_exp_tax.rda` [dissimilarity matrices]
+- `phylogenetic_diversity/distances_com_exp_phy.rda` [dissimilarity matrices]
+- `functional_diversity/distances_com_exp_func.rda` [dissimilarity matrices]
 
 **Comments:**
 - The sampling coverage (SC) can be calculated with DataInfobeta3D [*iNEXT.beta3D* package]
@@ -114,12 +114,12 @@ dis_com_q2est_pd <- 1- pairwise_PD91[["Matrices"]][["mor_hor_est"]]
 
 **Description:** To reduce the multidimensional complexity of the dissimilarity matrices to a two-dimensional representation (axis1 and axis2), perform an ordination with each distance matrix (TD, PD and FD) and for all orders of q (q = 0, q = 1 and q = 2). 
 
-**Script:** scripts/03_nmds_sk.R  
+**Script:** `scripts/03_nmds_sk.R`  
 
 **Input:** 
-- taxonomic_diversity/distances_com_exp_tax.rda [dissimilarity matrices]
-- phylogenetic_diversity/distances_com_exp_phy.rda [dissimilarity matrices]
-- functional_diversity/distances_com_exp_func.rda [dissimilarity matrices]
+- `taxonomic_diversity/distances_com_exp_tax.rda` [dissimilarity matrices]
+- `phylogenetic_diversity/distances_com_exp_phy.rda` [dissimilarity matrices]
+- `functional_diversity/distances_com_exp_func.rda` [dissimilarity matrices]
 
 **Analysis:** metaMDS [*vegan* package]
 
@@ -145,7 +145,7 @@ for (name in names(dissimilarity_matrices)) {
 }
 ```
 
-**Output:** data/nmds_results.rds  
+**Output:** `data/nmds_results.rds`  
 
 **Comments:** 
 - Set a random seed for reproducibility.
@@ -157,9 +157,9 @@ for (name in names(dissimilarity_matrices)) {
 
 **Description:** Take the resulting nmds axis1 values as response variables in linear models, with the five acoustic indices (Soundscape Saturation, Entropy Of Variance Spectrum, Acoustic Complexity, Temporal Entropy and Events Per Second) as predictor variables. 
 
-**Script:** scripts/04_soundIndices_as_predictors_sk.R  
+**Script:** `scripts/04_soundIndices_as_predictors_sk.R`  
 
-**Input:** data/plots_categories_indices_nmds.csv [Dataset that contains the plot IDs, the plot categories, the acoustic indices and the nmds axis1 values]
+**Input:** `data/plots_categories_indices_nmds.csv` [Dataset that contains the plot IDs, the plot categories, the acoustic indices and the nmds axis1 values]
 
 ![image](https://github.com/user-attachments/assets/74d9a5bb-9de4-466d-b294-a9141d61414e)
 
@@ -208,7 +208,7 @@ for (axis in nmds_axis1) {
 
 ```
 
-**Output:** data/data_models_and_results.RData  
+**Output:** `data/data_models_and_results.RData` 
 
 **Comments:** Evaluate the models`performance by checking R^2 or the t-values.  
 
