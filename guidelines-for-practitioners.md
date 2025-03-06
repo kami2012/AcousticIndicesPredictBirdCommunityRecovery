@@ -72,7 +72,7 @@ species (based on Jaccard, Horn, and Morisita-Horn index).
 
 **Input:** 
 
-| Biodiversity Type         | Input Dataset                         | Additional Data                     |
+| Biodiversity Type         | Input Data                       | Additional Data                     |
 |--------------------------|--------------------------------------|-------------------------------------|
 | **Taxonomic Diversity (TD)** | `taxonomic_diversity/com_td.csv`  [community dataset]   | -                                   |
 | **Phylogenetic Diversity (PD)** | `phylogenetic_diversity/com_pd.csv` [community dataset] | `bird_tree.rda` (Newick format)     |
@@ -100,28 +100,37 @@ dis_com_q2est_pd <- 1- pairwise_PD91[["Matrices"]][["mor_hor_est"]]
 ```
 
 **Output:** 
-- `taxonomic_diversity/distances_com_exp_tax.rda` [dissimilarity matrices]
-- `phylogenetic_diversity/distances_com_exp_phy.rda` [dissimilarity matrices]
-- `functional_diversity/distances_com_exp_func.rda` [dissimilarity matrices]
+
+| Biodiversity Type         | Output Data                         
+|--------------------------|--------------------------------------|
+| **Taxonomic Diversity (TD)** | `taxonomic_diversity/distances_com_exp_tax.rda` [dissimilarity matrices]  | 
+| **Phylogenetic Diversity (PD)** | `phylogenetic_diversity/distances_com_exp_phy.rda` [dissimilarity matrices] | 
+| **Functional Diversity (FD)** | `functional_diversity/distances_com_exp_func.rda` [dissimilarity matrices]  | 
 
 **Comments:**
+- The PD community dataset (`phylogenetic_diversity/com_pd.csv`) must match the species in the phylogenetic tree in both content and order.
+- The FD community dataset (`phylogenetic_diversity/com_fd.csv`) must  match the species in the traits matrix in both content and order.
 - The sampling coverage (SC) can be calculated with *DataInfobeta3D* of the [*iNEXT.beta3D* package](https://github.com/KaiHsiangHu/iNEXT.beta3D).
-- [tree] must be in Newick format.
-- [traits] must be a pairwise distance matrix (Gower distance).
+- The phylogenetic tree must be in Newick format.
+- The traits matrix must be a pairwise distance matrix (Gower distance).
 
 
 ## Step 5: Perform NMDS Ordination
 
-**Description:** To reduce the multidimensional complexity of the dissimilarity matrices to a two-dimensional representation (axis1 and axis2), perform an ordination with each distance matrix (TD, PD and FD) and for all orders of q (q = 0, q = 1 and q = 2). 
+**Description:** To reduce the multidimensional complexity of the dissimilarity matrices to a two-dimensional representation (axis1 and axis2), perform an ordination with each dissimilarity matrix.
 
 **Script:** `scripts/03_nmds_sk.R`  
 
 **Input:** 
-- `taxonomic_diversity/distances_com_exp_tax.rda` [dissimilarity matrices]
-- `phylogenetic_diversity/distances_com_exp_phy.rda` [dissimilarity matrices]
-- `functional_diversity/distances_com_exp_func.rda` [dissimilarity matrices]
 
-**Analysis:** metaMDS [*vegan* package]
+| Biodiversity Type         | Input Data                        
+|--------------------------|--------------------------------------|
+| **Taxonomic Diversity (TD)** | `taxonomic_diversity/distances_com_exp_tax.rda` [dissimilarity matrices]  | 
+| **Phylogenetic Diversity (PD)** | `phylogenetic_diversity/distances_com_exp_phy.rda` [dissimilarity matrices] | 
+| **Functional Diversity (FD)** | `functional_diversity/distances_com_exp_func.rda` [dissimilarity matrices]  | 
+
+
+**Analysis:** *metaMDS* of the [*vegan* package](https://cran.r-project.org/web/packages/vegan/index.html)
 
 ```
 # List of dissimilarity matrices
@@ -210,22 +219,17 @@ for (axis in nmds_axis1) {
 
 **Output:** `data/data_models_and_results.RData` 
 
-**Comments:** Evaluate the models`performance by checking R^2 or the t-values.  
+**Comments:** Assess the model's performance by comparing predicted NMDS Axis 1 values with observed NMDS Axis 1 values. Use R² to evaluate model fit and t-values to determine the significance of predictor variables.  
 
-## Step 7: Analyze All Data
+## Step 7: Analyze All Data  
 
-**Description:** If your model(s) can predict your test_data well, you can use them for analyzing your remaining sound data. 
+**Description:** If your model(s) perform well on the test dataset, you can apply them to the remaining sound data to make predictions.  
 
-**Input:** [sound files] 
+**Input:** [sound files]  
 
-**Analysis:** 
+**Analysis:**  
 
-```
-# Predict on the sound_files
+```r
+# Predict NMDS Axis 1 values for all sound files
 predictions_sound_files <- predict(model, newdata = sound_files)
-
 ```
-
-**Output:** 
-**Comments:**
-
