@@ -131,7 +131,7 @@ dissimilarity_matrices <- list(
   PD_q2 = dis_com_q2est_pd
 )
 
- Compute NMDS for each matrix
+# Compute NMDS for each matrix
 for (name in names(dissimilarity_matrices)) {
   set.seed(1)
   nmds <- metaMDS(dissimilarity_matrices[[name]], k = 2, maxit = 999, trymax = 100)
@@ -147,9 +147,20 @@ for (name in names(dissimilarity_matrices)) {
 - Adjust k (number of dimensions) if needed.
 
 
-## Step 6: Divide the validation dataset into train and test
+## Step 6: Train linear models
 
-## Step 7: Train linear models
+**Description:** Take the resulting nmds axis1 values as response variables in linear models, with the five acoustic indices (Soundscape Saturation, Entropy Of Variance Spectrum, Acoustic Complexity, Temporal Entropy and Events Per Second) as predictor variables. 
+
+**Script:** scripts/04_soundIndices_as_predictors_sk.R  
+
+**Input:** data/plots_categories_indices_nmds.csv [Dataset that contains the plot names, the plot categories, the acoustic indices and the nmds axis1 values]
+
+![image](https://github.com/user-attachments/assets/74d9a5bb-9de4-466d-b294-a9141d61414e)
+
+
+
+
+
 
 ## Step 8: Analyze all data [sound files] 
 
