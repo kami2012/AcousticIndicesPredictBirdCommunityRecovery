@@ -153,18 +153,73 @@ for (name in names(dissimilarity_matrices)) {
 
 **Script:** scripts/04_soundIndices_as_predictors_sk.R  
 
-**Input:** data/plots_categories_indices_nmds.csv [Dataset that contains the plot names, the plot categories, the acoustic indices and the nmds axis1 values]
+**Input:** data/plots_categories_indices_nmds.csv [Dataset that contains the plot IDs, the plot categories, the acoustic indices and the nmds axis1 values]
 
 ![image](https://github.com/user-attachments/assets/74d9a5bb-9de4-466d-b294-a9141d61414e)
 
+Split the data into train (0.66) and test (0.33) by picking every 3rd row:
+
+```
+# Load data
+data_com <- read.csv("data/plots_categories_indices_nmds.csv")
+
+# Sort by nmds axis1
+data_com <- data_com[order(data_com$TD_q0_Axis1), ]
+
+# Every third row for the test set
+test_data <- data_com[seq(3, nrow(data_com), by = 3), ]
+
+# Remaining rows (those not in the test set) for the training set
+train_data <- data_com[-seq(3, nrow(data_com), by = 3), ]
+```
+
+**Analysis:**
+
+```
+# Define the response variables
+nmds_axis1 <- c("TD_q0_Axis1", "TD_q1_Axis1", "TD_q2_Axis1",
+                "FD_q0_Axis1", "FD_q1_Axis1", "FD_q2_Axis1",
+                "PD_q0_Axis1", "PD_q1_Axis1", "PD_q2_Axis1")
+
+# Define the predictors 
+predictors <- c("SoundscapeSaturation", "EntropyOfVarianceSpectrum", "AcousticComplexity", 
+                "TemporalEntropy", "EventsPerSecond")
 
 
+# Loop over each response variable 
+for (axis in nmds_axis1) {
+  
+  # Create formula for the current response variable
+  formula <- as.formula(paste(axis, "~", paste(predictors, collapse = " + ")))
+  
+  # Fit linear model to the training data
+  model <- lm(formula, data = train_data)
 
+  # Predict on the test data
+  predictions_tdata <- predict(model, newdata = test_data)
 
+}
 
-## Step 8: Analyze all data [sound files] 
+```
 
+**Output:** data/data_models_and_results.RData  
 
+**Comments:** Evaluate the models`performance by checking R^2 or the t-values.  
 
+## Step 7: Analyze all data [sound files] 
 
+**Description:** If your model(s) can predict your test_data well, you can use them for analyzing your remaining sound data. 
+
+**Input:** [sound files] 
+
+**Analysis:** 
+
+```
+# Predict on the sound_files
+predictions_sound_files <- predict(model, newdata = sound_files)
+
+```
+
+**Output:** 
+**Comments:**
 
