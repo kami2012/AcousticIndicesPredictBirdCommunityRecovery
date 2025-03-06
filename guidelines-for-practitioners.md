@@ -93,12 +93,12 @@ dis_com_q1est_pd <- 1- pairwise_PD91[["Matrices"]][["hor_est"]]
 dis_com_q2est_pd <- 1- pairwise_PD91[["Matrices"]][["mor_hor_est"]]
 ```
 
-**Output** 
+**Output:** 
 - taxonomic_diversity/distances_com_exp_tax.rda [dissimilarity matrices]
 - phylogenetic_diversity/distances_com_exp_phy.rda [dissimilarity matrices]
 - functional_diversity/distances_com_exp_func.rda [dissimilarity matrices]
 
-**Comments**
+**Comments:**
 - The sampling coverage (SC) can be calculated with DataInfobeta3D [*iNEXT.beta3D* package]
 - [tree] must be in Newick format
 - [traits] must be a pairwise distance matrix (Gower distance)
@@ -138,7 +138,15 @@ for (name in names(dissimilarity_matrices)) {
   nmds_results[[name]] <- nmds
 }
 ```
-  
+
+**Output:** data/nmds_results.rds  
+
+**Comments:** 
+- Set a random seed for reproducibility.
+- Check stress values (<0.2 is good, <0.1 is excellent).
+- Adjust k (number of dimensions) if needed.
+
+
 ## Step 6: Divide the validation dataset into train and test
 
 ## Step 7: Train linear models
