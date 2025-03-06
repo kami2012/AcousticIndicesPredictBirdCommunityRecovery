@@ -46,20 +46,20 @@
 
 **Input:** [sound files]  
 
-**Analysis:** Experts label species presence (1) /absence (0) in each file.  
+**Analysis:** Experts label species presence (1) / absence (0) in each file.  
 
 **Output:** `data/detections_freile_gelis_2021_2022_birds_dummy_pivot_reordered.csv` [community dataset]  
 
 ![image](https://github.com/user-attachments/assets/16ebc402-7c77-482d-ae2f-aaa72cec6f84)
 
-**Comments:**  The first column must be named "filename", the second "plot".
+**Comments:**  The first column must be named "filename", the second "plot" (= requirements for `scripts/iNEXTbeta3D_pair3D`, s. Step 4).
 
 ## Step 4: Compute Pairwise β-Diversity Indices
 
 **Description:** Compute pairwise β-diversity indices (dissimilarity matrices), taking into account three dimensions of biodiversity
-- “taxonomic diversity” (TD)
-- “phylogenetic diversity” (PD)
-- “functional diversity” (FD)
+- Taxonomic Diversity (TD)
+- Phylogenetic Diversity (PD)
+- Functional Diversity (FD)
 
 and focusing on 
 - infrequent (q = 0)
@@ -79,7 +79,7 @@ species (based on Jaccard, Horn, and Morisita-Horn index).
 | **Functional Diversity (FD)** | `functional_diversity/com_fd.csv` [community dataset]  | `trait_matrix.rda` (Gower distance) |
 
 
-**Analysis:** `scripts/iNEXTbeta3D_pair3D` (an adaptation of iNEXT.beta3D [*iNEXT.beta3D* package])
+**Analysis:** `scripts/iNEXTbeta3D_pair3D` (an adaptation of *iNEXT.beta3D* of the [*iNEXT.beta3D* package](https://github.com/KaiHsiangHu/iNEXT.beta3D))
 
 ```
 pairwise_TD91 = iNEXTbeta3D_pair3D(com_td, div0="TD", SC = SC, datatype0 = "incidence_raw", parallel = T, cpus = 8)
@@ -105,9 +105,9 @@ dis_com_q2est_pd <- 1- pairwise_PD91[["Matrices"]][["mor_hor_est"]]
 - `functional_diversity/distances_com_exp_func.rda` [dissimilarity matrices]
 
 **Comments:**
-- The sampling coverage (SC) can be calculated with DataInfobeta3D [*iNEXT.beta3D* package]
-- [tree] must be in Newick format
-- [traits] must be a pairwise distance matrix (Gower distance)
+- The sampling coverage (SC) can be calculated with *DataInfobeta3D* of the [*iNEXT.beta3D* package](https://github.com/KaiHsiangHu/iNEXT.beta3D).
+- [tree] must be in Newick format.
+- [traits] must be a pairwise distance matrix (Gower distance).
 
 
 ## Step 5: Perform NMDS Ordination
