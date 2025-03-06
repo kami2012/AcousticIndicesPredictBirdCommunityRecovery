@@ -79,7 +79,7 @@ species (based on Jaccard, Horn, and Morisita-Horn index).
 | **Functional Diversity (FD)** | `functional_diversity/com_fd.csv` [community dataset]  | `trait_matrix.rda` (Gower distance) |
 
 
-**Analysis:** iNEXTbeta3D_pair3D (an adaptation of iNEXT.beta3D [*iNEXT.beta3D* package])
+**Analysis:** `scripts/iNEXTbeta3D_pair3D` (an adaptation of iNEXT.beta3D [*iNEXT.beta3D* package])
 
 ```
 pairwise_TD91 = iNEXTbeta3D_pair3D(com_td, div0="TD", SC = SC, datatype0 = "incidence_raw", parallel = T, cpus = 8)
