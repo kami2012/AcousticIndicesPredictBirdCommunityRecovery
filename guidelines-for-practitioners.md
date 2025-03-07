@@ -13,7 +13,7 @@
 
 ## Step 1: Collect Sound Recordings
 
-**Description:** Record audio in all plots of interest.  
+**Description:** Record audio in all plots of your study region, ensuring coverage across different times of day and all relevant habitat types to obtain a representative dataset.
 
 **Input:**  
 
@@ -25,7 +25,8 @@
 
 ## Step 2: Compute Acoustic Indices
 
-**Description:** Compute the following 5 acoustic indices for all [sound files]:  
+**Description:** Compute suitable acoustic indices for all [sound files] to evaluate the ecosystem you are interested in. 
+We suggest the following 5 acoustic indices, which reflect key aspects of acoustic environments:    
 - Soundscape Saturation
 - Entropy Of Variance Spectrum
 - Acoustic Complexity
@@ -42,7 +43,7 @@
 
 ## Step 3: Make a Validation Dataset
 
-**Description:** Select a representative subset of the [sound files] for validation. These files should be manually labeled by experts to ensure high-quality reference data.   
+**Description:** Select a representative subset of the [sound files] for validation. These files should be manually labeled by experts to ensure high-quality reference data. If you are targeting specific taxa, include recordings that capture both the primary activity peaks of your target group and periods when less dominant species are active. For example, if you are recording birds, include sessions that capture daytime flock activities as well as nocturnal recordings for species such as owls. Base your selection on the available ecological knowledge of your species or community of interest to ensure all relevant behaviors and temporal variations are represented.   
 
 **Input:** [sound files]  
 
