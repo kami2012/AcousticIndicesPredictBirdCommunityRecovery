@@ -27,19 +27,19 @@
 
 **Description:** Compute suitable acoustic indices for all [sound files] to evaluate the ecosystem you are interested in. 
 We suggest the following 5 acoustic indices, which reflect key aspects of acoustic environments:    
-- Soundscape Saturation
-- Entropy Of Variance Spectrum
-- Acoustic Complexity
-- Temporal Entropy
-- Events Per Second
+- Acoustic Complexity, a measure of temporal variation in frequency bands, see https://www.sciencedirect.com/science/article/pii/S1470160X10002037 and https://eprints.qut.edu.au/110634/
+- Entropy Of Variance Spectrum, a measure of temporal variation in spectograms, see https://eprints.qut.edu.au/110634/
+- Temporal Entropy, a measure of temporal variation in spectograms, see https://eprints.qut.edu.au/110634/
+- Events Per Second, a simple measure of acoustic activity, see https://eprints.qut.edu.au/110634/
+- Soundscape Saturation: Get powerspectrum from Towsey AnalysisProgram.exe and evaluate according to https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.13481
 
-**Input:** [sound files]  
+**Input:** [sound files] for supported file formats see https://ap.qut.ecoacoustics.info/basics/formats  
 
-**Analysis:** AnalysisProgram.exe 
+**Analysis:** Towsey AnalysisProgram.exe (https://ap.qut.ecoacoustics.info/)
 
-**Output:**   
+**Output:** csv files  
 
-**Comments:**  
+**Comments:**    
 
 ## Step 3: Make a Validation Dataset
 
