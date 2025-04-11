@@ -8,6 +8,9 @@ library(iNEXT.beta3D)
 library(snowfall)
 library(dplyr)
 
+# Working directory
+setwd("E:/Manuscripts/1_3D_ecuador")
+
 # DivPair Demo by Joerg and Anne
 # updated by Oliver, 15.04.2024
 source("scripts/DivPairCoverage_V2.R")
@@ -36,6 +39,8 @@ load(file = "functional_diversity/trait_matrix.rda")
 # Transform into list with 1 data frame (rows = Files, columns = Birds) per Plot 
 birds_inci = lapply(unique(com_td$plot), function(i) com_td %>% filter(plot == i) %>% .[,-(1:2)] %>% t)
 names(birds_inci) = unique(com_td$plot)   ## incidence raw data for iNEXT.3D format
+
+#info <- DataInfo3D(birds_inci, diversity = 'TD', datatype = "incidence_raw")
 
 info <- DataInfobeta3D(birds_inci, diversity = "TD", datatype = "incidence_raw",
                PDtree = NULL, PDreftime = NULL, FDdistM = NULL, FDtype = "AUC", FDtau = NULL) 

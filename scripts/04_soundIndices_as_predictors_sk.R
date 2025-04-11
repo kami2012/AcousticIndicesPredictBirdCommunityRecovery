@@ -198,6 +198,90 @@ dev.off()
 
 
 
+
+
+
+
+
+######################################################################################################
+################# Boxplot nmds Axis 1 and predicted values along recovery gradient #################
+
+# Supplementary Figure S4
+
+load("data/data_models_and_results.RData")
+
+diversity_mapping <- c(
+  "TD_q0_Axis1" = "Taxonomic Diversity (q = 0)",
+  "TD_q1_Axis1" = "Taxonomic Diversity (q = 1)",
+  "TD_q2_Axis1" = "Taxonomic Diversity (q = 2)",
+  "FD_q0_Axis1" = "Functional Diversity (q = 0)",
+  "FD_q1_Axis1" = "Functional Diversity (q = 1)",
+  "FD_q2_Axis1" = "Functional Diversity (q = 2)",
+  "PD_q0_Axis1" = "Phylogenetic Diversity (q = 0)",
+  "PD_q1_Axis1" = "Phylogenetic Diversity (q = 1)",
+  "PD_q2_Axis1" = "Phylogenetic Diversity (q = 2)"
+  # Add mappings for all your NMDS axes
+)
+             
+# Create a mapping for labels
+label_mapping <- c(
+  "A_Caca" = "A_C",
+  "A_Past" = "A_P",
+  "A_Old" = "A_Old",
+  "F_Caca" = "F_C",
+  "F_Past" = "F_P",
+  "F_CReg1" = "F_C_RegI",
+  "F_PReg1" = "F_P_RegI",
+  "F_CReg2" = "F_C_RegII",
+  "F_PReg2" = "F_P_RegII",
+  "F_Old" = "F_Old"
+)
+
+# Assign new column for labels
+test_data$Label <- label_mapping[test_data$Category10]
+
+gradient <- c("A_P", "A_C", "F_P", "F_C", "F_P_RegI", "A_Old", "F_C_RegI", "F_P_RegII", "F_C_RegII", "F_Old")
+test_data$Label <- factor(test_data$Label, levels = gradient)
+
+# Loop through each NMDS axis for plotting
+for (axis in nmds_axis1) {
+  
+  # Get predictions and observed values
+  predicted_tdata_values <- predictions_tdata_results[[axis]]
+  observed_values <- test_data[[axis]]
+  
+  diversity <- diversity_mapping[axis]
+
+  # Boxplot nmds Axis 1 and predicted values against recovery gradient
+  png(filename = paste0("plots/RecoveryGradient/", axis, ".png"), width = 1000, height = 600)
+
+  # Observed Values
+  boxplot(observed_values ~ test_data$Label, xlab = "Recovery gradient", 
+          ylab = diversity, col = rgb(1, 0, 0, 0.5))
+  
+  # Predicted Values
+  par(new = TRUE)
+  boxplot(predicted_tdata_values ~ test_data$Label, xlab = "", ylab = "", 
+          col = rgb(0, 0, 1, 0.5), axes = FALSE, at = 1:length(levels(test_data$Label)) + 0.2)
+  
+
+  # Add a legend
+  legend("topleft", 
+         legend=c("Observed Bird Community (NMDS1)", "Predicted Bird Community (NMDS1)"), 
+         fill=c(rgb(1, 0, 0, 0.5), rgb(0, 0, 1, 0.5)), 
+         bty="o")
+  
+  legend("bottomright", 
+         legend = c("A = Agricultural Matrix", "F = Forest Matrix", "",
+                    "C = (former) Cacao", "P = (former) Pasture", "",
+                    "RegI = Regeneration I", "RegII = Regeneration II", "Old = Old growth"), 
+         bty = "o",          # Box around the legend
+  )     
+
+  dev.off()
+}
+
+
 ######################################################################################################
 ##################### Print the t-values of the acoustic indices as table ############################
 
