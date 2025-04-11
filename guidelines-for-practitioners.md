@@ -83,13 +83,14 @@ species (based on Jaccard, Horn, and Morisita-Horn index).
 **Analysis:** `scripts/iNEXTbeta3D_pair3D` (an adaptation of *iNEXT.beta3D* of the [*iNEXT.beta3D* package](https://github.com/KaiHsiangHu/iNEXT.beta3D))
 
 ```
-pairwise_TD91 = iNEXTbeta3D_pair3D(com_td, div0="TD", SC = SC, datatype0 = "incidence_raw", parallel = T, cpus = 8)
+pairwise_TD91 = iNEXTbeta3D_pair3D(com_td, div0="TD", SC = SC, datatype0 = "incidence_raw",
+                parallel = T, cpus = 8)
 
-pairwise_PD91 = iNEXTbeta3D_pair3D(com_pd, div0="PD", SC = SC, datatype0 = "incidence_raw", PDTree0 = tr, 
-                                   parallel = T, cpus = 8)
+pairwise_PD91 = iNEXTbeta3D_pair3D(com_pd, div0="PD", SC = SC, datatype0 = "incidence_raw",
+                PDTree0 = tr, parallel = T, cpus = 8)
 
-pairwise_FD91 = iNEXTbeta3D_pair3D(com_fd, div0="FD", SC = SC, datatype0 = "incidence_raw", FDdistM0 = distM, 
-                                  parallel = T, cpus = 8)
+pairwise_FD91 = iNEXTbeta3D_pair3D(com_fd, div0="FD", SC = SC, datatype0 = "incidence_raw",
+                FDdistM0 = distM, parallel = T, cpus = 8)
 ```
 
 The resulting similarity matrices must be converted to dissimilarity matrices, e.g.:
