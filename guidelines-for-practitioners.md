@@ -13,7 +13,7 @@
 
 ## Step 1: Collect Sound Recordings
 
-**Description:** Record audio in all plots of your study region, ensuring coverage across different times of day and all relevant habitat types to obtain a representative dataset.
+**Description:** Record audio in all plots of your study region, ensuring coverage across different times of day and all relevant habitat types to obtain a representative dataset. Make sure that all recordings use the same settings (e.g., sampling rate, duration, ...) to ensure comparability.
 
 **Input:**  
 
@@ -25,7 +25,7 @@
 
 ## Step 2: Compute Acoustic Indices
 
-**Description:** Compute suitable acoustic indices for all [sound files] to evaluate the ecosystem you are interested in. 
+**Description:** Compute suitable acoustic indices for the [sound files] to evaluate the ecosystem you are interested in. 
 We suggest the following 5 acoustic indices, which reflect key aspects of acoustic environments:    
 - Acoustic Complexity, a measure of temporal variation in frequency bands, see https://www.sciencedirect.com/science/article/pii/S1470160X10002037 and https://eprints.qut.edu.au/110634/
 - Entropy Of Variance Spectrum, a measure of temporal variation in spectograms, see https://eprints.qut.edu.au/110634/
@@ -33,7 +33,7 @@ We suggest the following 5 acoustic indices, which reflect key aspects of acoust
 - Events Per Second, a simple measure of acoustic activity, see https://eprints.qut.edu.au/110634/
 - Soundscape Saturation: Get powerspectrum from Towsey AnalysisProgram.exe and evaluate according to https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.13481
 
-**Input:** [sound files] for supported file formats see https://ap.qut.ecoacoustics.info/basics/formats  
+**Input:** [sound files], for supported file formats see https://ap.qut.ecoacoustics.info/basics/formats  
 
 **Analysis:** Towsey AnalysisProgram.exe (https://ap.qut.ecoacoustics.info/)
 
