@@ -37,13 +37,13 @@ We suggest the following 5 acoustic indices, which reflect key aspects of acoust
 
 **Analysis:** Towsey AnalysisProgram.exe (https://ap.qut.ecoacoustics.info/)
 
-**Output:** csv files  
+**Output:** .csv files  
 
 **Comments:**    
 
 ## Step 3: Make a Validation Dataset
 
-**Description:** Select a representative subset of the [sound files] for validation. These files should be manually labeled by experts to ensure high-quality reference data. If you are targeting specific taxa, include recordings that capture both the primary activity peaks of your target group and periods when less dominant species are active. For example, if you are recording birds, include sessions that capture daytime flock activities as well as nocturnal recordings for species such as owls. Base your selection on the available ecological knowledge of your species or community of interest to ensure all relevant behaviors and temporal variations are represented.   
+**Description:** Select a representative subset of the [sound files] for validation. These files should be manually labeled by experts to ensure high-quality reference data. If you are targeting specific taxa, include recordings that capture both the primary activity peaks of your target group and periods when less dominant species are active. For example, if you are recording birds, include sessions that capture daytime flock activities as well as nocturnal recordings for species such as owls. <mark> Base your selection on the available ecological knowledge of your species or community of interest </mark> to ensure all relevant behaviors and temporal variations are represented.   
 
 **Input:** [sound files]  
 
