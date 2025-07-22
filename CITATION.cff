@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it as below."
+title: "Acoustic indices predict taxonomic, functional, and phylogenetic recovery of bird communities in tropical forest restoration"
+authors:
+  - family-names: Kümmet
+    given-names: Sonja
+    orcid: https://orcid.org/0000-0002-8954-0200
+# Add additional authors as needed
+date-released: 2025-07-22
+version: 1.0.0
+doi: 10.5281/zenodo.XXXXXXX
+repository-code: https://github.com/kami2012/AcousticIndicesPredictBirdCommunityRecovery
+url: https://github.com/kami2012/AcousticIndicesPredictBirdCommunityRecovery
+license: MIT
+keywords:
+  - biodiversity monitoring
+  - acoustic indices
+  - bird community
+  - restoration ecology
+  - tropical forests
