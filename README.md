@@ -23,3 +23,5 @@ Using extensive sound recordings from lowland tropical forests, we:
 - **Taxonomic recovery** was best predicted for **common and dominant species**.
 - **Functional and phylogenetic recovery** was best predicted for both **rare and common species**.
 - A **small set of validated acoustic indices** can serve as an efficient tool to monitor large-scale tropical restoration, including recovery of functionally rare bird species.
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16354342.svg)](https://doi.org/10.5281/zenodo.16354342)
