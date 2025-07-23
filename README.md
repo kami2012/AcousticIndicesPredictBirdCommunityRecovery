@@ -12,7 +12,7 @@ Using extensive sound recordings from lowland tropical forests, we:
 
 - **Identified 334 bird species** through expert annotation and AI-based recognition.
 - **Calculated standard acoustic indices** from the recordings.
-- **Analyzed community composition** using **Hill numbers** to account for incomplete sampling.
+- **Analyzed community composition** using **Hill numbers** and accounting for incomplete sampling.
 - Evaluated predictions of **taxonomic**, **functional**, and **phylogenetic diversity** based on acoustic indices.
 
 ### Key Findings
