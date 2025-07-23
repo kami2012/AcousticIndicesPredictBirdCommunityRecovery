@@ -1,7 +1,5 @@
 # Predicting Bird Community Recovery with Acoustic Indices
 
-## Overview
-
 This repository contains the data and scripts for the manuscript:  
 **"Acoustic indices predict taxonomic, functional, and phylogenetic recovery of bird communities in tropical forest restoration."**
 
